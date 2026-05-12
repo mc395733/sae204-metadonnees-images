@@ -28,7 +28,7 @@ pip install Pillow exifread piexif
 
 Erreur obtenue :
 
-```
+```text
 externally-managed-environment
 ```
 
@@ -36,19 +36,23 @@ Cette erreur signifie que Python est géré par le système et qu'il ne faut pas
 
 La solution utilisée a été de créer un environnement virtuel Python :
 
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install Pillow exifread piexif
+```
 
 Une fois l'environnement activé, le script peut être lancé avec :
 
+```bash
 python3 metadonnees.py
+```
 
 ## Bibliothèques utilisées
 
-- Pillow : ouverture d'images et lecture EXIF de base
-- exifread : extraction complète des tags EXIF avec des noms lisibles
-- piexif : lecture et écriture des données EXIF
+- **Pillow** : ouverture d'images et lecture EXIF de base
+- **exifread** : extraction complète des tags EXIF avec des noms lisibles
+- **piexif** : lecture et écriture des données EXIF
 
 ## Travail réalisé pendant la séance 1
 
@@ -59,18 +63,18 @@ python3 metadonnees.py
 - Transfert des images avec LocalSend pour conserver les métadonnées
 - Observation du fait que Gmail peut supprimer certaines métadonnées
 - Extraction de 47 tags EXIF sur une photo de test
-- Affichage de tags comme Make, Model, DateTimeOriginal, LensModel, FNumber et ISO
+- Affichage de tags comme `Make`, `Model`, `DateTimeOriginal`, `LensModel`, `FNumber` et `ISO`
 - Début de comparaison entre Pillow, ExifRead et piexif
 
 ## Problèmes rencontrés
 
-Lors de l'installation des bibliothèques sous WSL, l'erreur `externally-managed-environment` a empêché l'installation directe avec pip.
+Lors de l'installation des bibliothèques sous WSL, l'erreur `externally-managed-environment` a empêché l'installation directe avec `pip`.
 
 Un autre problème rencontré concerne le transfert des images. Certaines méthodes, comme l'envoi par Gmail, peuvent supprimer les métadonnées des photos.
 
 ## Solutions trouvées
 
-Pour le problème d'installation, nous avons utilisé un environnement virtuel Python avec venv.
+Pour le problème d'installation, nous avons utilisé un environnement virtuel Python avec `venv`.
 
 Pour le transfert des images, nous avons utilisé LocalSend afin de conserver les fichiers originaux et leurs métadonnées.
 
@@ -84,6 +88,6 @@ Pour le transfert des images, nous avons utilisé LocalSend afin de conserver le
 
 ## Auteurs
 
-Mathéo Coutant & Jules Charpentier
-BUT Réseaux & Télécommunications — IUT Auxerre 2024-2025
+Mathéo Coutant & Jules Charpentier  
+BUT Réseaux & Télécommunications — IUT Auxerre 2024-2025  
 Encadrant : A. Nectoux
