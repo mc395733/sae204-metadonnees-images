@@ -89,5 +89,5 @@ Pour le transfert des images, nous avons utilisé LocalSend afin de conserver le
 ## Auteurs
 
 Mathéo Coutant & Jules Charpentier  
-BUT Réseaux & Télécommunications — IUT Auxerre 2024-2025  
+BUT Réseaux & Télécommunications — IUT Auxerre 2025-2026  
 Encadrant : A. Nectoux
