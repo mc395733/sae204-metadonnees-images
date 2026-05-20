@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extraction Métadonnées Image</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+   
+</head>
+<body>
+
+   <div class="container">
+    <h2>Uploader une image</h2>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="extractMetadata()">Valider</button>
+    
+    <h3>Informations de l'image :</h3>
+    <pre id="output"></pre>
+   </div>
+
+  <script src="./script.js"></script>
+
+</body>
+</html>
