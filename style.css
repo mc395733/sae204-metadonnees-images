@@ -1,0 +1,120 @@
+/* SAE 204 — style.css */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  color: #222;
+  min-height: 100vh;
+}
+
+/* HEADER */
+header {
+  background: #1a1a2e;
+  color: white;
+  padding: 20px 30px;
+  text-align: center;
+}
+header h1 { font-size: 20px; margin-bottom: 5px; }
+header p  { font-size: 13px; color: #aab; }
+
+/* MAIN */
+main {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* UPLOAD */
+.upload {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #dde;
+  margin-bottom: 20px;
+}
+.upload input { flex: 1; font-size: 13px; }
+.upload button {
+  background: #4361ee;
+  color: white;
+  border: none;
+  padding: 9px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.upload button:hover { background: #2244cc; }
+
+/* APERCU */
+#apercu-wrap {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+#apercu {
+  max-width: 120px;
+  max-height: 100px;
+  border-radius: 6px;
+  border: 1px solid #dde;
+  object-fit: cover;
+}
+#nom-fichier { font-size: 13px; color: #666; }
+
+/* ERREUR */
+#erreur {
+  background: #fff0f0;
+  border: 1px solid #f5b0b0;
+  color: #cc2222;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+/* CARDS */
+.card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #dde;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.card h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+/* LIGNES CLÉ / VALEUR */
+.ligne {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 13px;
+}
+.ligne:last-child { border-bottom: none; }
+.cle    { color: #888; }
+.valeur { color: #222; font-weight: 500; text-align: right; }
+.vide   { font-size: 13px; color: #aaa; font-style: italic; }
+
+/* LIEN GOOGLE MAPS */
+.lien-maps {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #4361ee;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 13px;
+}
+.lien-maps:hover { background: #2244cc; }

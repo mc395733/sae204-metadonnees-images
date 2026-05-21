@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAE 204 — Métadonnées EXIF</title>
+  <script src="https://cdn.jsdelivr.net/npm/exifr/dist/full.umd.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>📷 Analyseur de métadonnées EXIF</h1>
+    <p>Coutant Mathéo &amp; Charpentier Jules — IUT Auxerre — SAE 204</p>
+  </header>
+
+  <main>
+
+    <!-- Upload -->
+    <div class="upload">
+      <input type="file" id="imageInput" accept="image/*">
+      <button onclick="extractMetadata()">Valider</button>
+    </div>
+
+    <!-- Aperçu -->
+    <div id="apercu-wrap" style="display:none;">
+      <img id="apercu" src="" alt="Aperçu">
+      <p id="nom-fichier"></p>
+    </div>
+
+    <!-- Erreur -->
+    <p id="erreur" style="display:none;"></p>
+
+    <!-- Résultats -->
+    <div id="resultats" style="display:none;">
+
+      <div class="card">
+        <h2>📸 Appareil photo</h2>
+        <div id="bloc-appareil"></div>
+      </div>
+
+      <div class="card">
+        <h2>🖼 Informations image</h2>
+        <div id="bloc-image"></div>
+      </div>
+
+      <div class="card">
+        <h2>📅 Date</h2>
+        <div id="bloc-date"></div>
+      </div>
+
+      <div class="card" id="card-gps">
+        <h2>📍 Localisation GPS</h2>
+        <div id="bloc-gps"></div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
