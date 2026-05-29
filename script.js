@@ -78,6 +78,10 @@ async function extractMetadata() {
             document.getElementById('card-gps').style.display = 'none';
         }
 
+        // Scoring et fact-check
+        afficherScoring(data);
+        afficherFactcheck(data);
+
         document.getElementById('resultats').style.display = 'block';
         document.getElementById('erreur').style.display = 'none';
 
@@ -115,4 +119,65 @@ function showError(msg) {
     el.textContent = msg;
     el.style.display = 'block';
     document.getElementById('resultats').style.display = 'none';
+}
+
+// ── SCORING vie privée (basé sur scoring.py) ──────────────────────────
+function afficherScoring(data) {
+    var score = 0;
+    var details = [];
+
+    if (data.latitude && data.longitude) { score += 4; details.push('GPS présent (+4 pts)'); }
+    if (data.Model)           { score += 2; details.push('Modèle : ' + data.Model + ' (+2 pts)'); }
+    if (data.Artist)          { score += 2; details.push('Auteur : ' + data.Artist + ' (+2 pts)'); }
+    if (data.DateTimeOriginal){ score += 1; details.push('Date de prise de vue (+1 pt)'); }
+    if (data.Software)        { score += 1; details.push('Logiciel : ' + data.Software + ' (+1 pt)'); }
+
+    var niveau = '';
+    if (score === 0)     niveau = 'FAIBLE — Sûre à partager';
+    else if (score <= 3) niveau = 'MODÉRÉ — Appareil identifiable';
+    else if (score <= 6) niveau = 'ÉLEVÉ — Localisation exposée !';
+    else                 niveau = 'CRITIQUE — Ne pas partager !';
+
+    var html = '<div class="score-badge">' + score + '/10 — ' + niveau + '</div>';
+    details.forEach(function(d) { html += '<div class="score-detail">→ ' + d + '</div>'; });
+
+    document.getElementById('bloc-scoring').innerHTML = html;
+}
+
+// ── FACT-CHECK (basé sur factcheck.py) ───────────────────────────────
+function afficherFactcheck(data) {
+    var alertes = [];
+
+    // Vérif 1 : logiciel de retouche
+    if (data.Software) {
+        var soft = data.Software.toLowerCase();
+        var retouche = ['photoshop', 'gimp', 'lightroom', 'affinity', 'darktable'];
+        retouche.forEach(function(r) {
+            if (soft.indexOf(r) !== -1) alertes.push('Logiciel de retouche détecté : ' + data.Software);
+        });
+    }
+
+    // Vérif 2 : dates incohérentes
+    if (data.DateTimeOriginal && data.DateTime) {
+        var d1 = new Date(data.DateTimeOriginal).getTime();
+        var d2 = new Date(data.DateTime).getTime();
+        if (d1 !== d2) alertes.push('Dates incohérentes : prise de vue ≠ modification');
+    }
+
+    // Vérif 3 : smartphone sans GPS
+    if (data.Model) {
+        var modele = data.Model.toLowerCase();
+        var smartphones = ['iphone', 'samsung', 'pixel', 'xiaomi', 'huawei', 'oneplus'];
+        var estSmartphone = smartphones.some(function(s) { return modele.indexOf(s) !== -1; });
+        if (estSmartphone && !data.latitude) alertes.push('Smartphone sans GPS : données supprimées ou désactivées');
+    }
+
+    var html = '';
+    if (alertes.length === 0) {
+        html = '<p class="ok">✅ Aucune anomalie détectée</p>';
+    } else {
+        alertes.forEach(function(a) { html += '<div class="alerte">⚠ ' + a + '</div>'; });
+    }
+
+    document.getElementById('bloc-factcheck').innerHTML = html;
 }
