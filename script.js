@@ -13,31 +13,22 @@ document.getElementById('imageInput').addEventListener('change', function () {
 
 // Extraction et affichage des métadonnées
 async function extractMetadata() {
-    var input = document.getElementById('imageInput');
-    var file = input.files[0];
-
-    if (!file) {
-        showError('Veuillez d\'abord sélectionner une image.');
-        return;
-    }
+    var file = document.getElementById('imageInput').files[0];
+    if (!file) { showError('Veuillez sélectionner une image.'); return; }
 
     try {
         var data = await exifr.parse(file, { gps: true });
-
-        if (!data) {
-            showError('Aucune métadonnée EXIF trouvée dans cette image.');
-            return;
-        }
+        if (!data) { showError('Aucune métadonnée EXIF trouvée.'); return; }
 
         // Appareil photo
         fillBloc('bloc-appareil', [
-            { cle: 'Fabricant',       valeur: data.Make },
-            { cle: 'Modèle',          valeur: data.Model },
-            { cle: 'Objectif',        valeur: data.LensModel },
-            { cle: 'Ouverture',       valeur: data.FNumber ? 'f/' + data.FNumber : null },
-            { cle: 'Vitesse obtu.',   valeur: data.ExposureTime ? data.ExposureTime + ' s' : null },
-            { cle: 'ISO',             valeur: data.ISO },
-            { cle: 'Flash',           valeur: data.Flash },
+            { cle: 'Fabricant',     valeur: data.Make },
+            { cle: 'Modèle',        valeur: data.Model },
+            { cle: 'Objectif',      valeur: data.LensModel },
+            { cle: 'Ouverture',     valeur: data.FNumber ? 'f/' + data.FNumber : null },
+            { cle: 'Vitesse obtu.', valeur: data.ExposureTime ? data.ExposureTime + ' s' : null },
+            { cle: 'ISO',           valeur: data.ISO },
+            { cle: 'Flash',         valeur: data.Flash },
         ]);
 
         // Informations image
@@ -51,8 +42,8 @@ async function extractMetadata() {
 
         // Date
         fillBloc('bloc-date', [
-            { cle: 'Prise de vue',    valeur: formatDate(data.DateTimeOriginal) },
-            { cle: 'Modification',    valeur: formatDate(data.DateTime) },
+            { cle: 'Prise de vue',  valeur: formatDate(data.DateTimeOriginal) },
+            { cle: 'Modification',  valeur: formatDate(data.DateTime) },
         ]);
 
         // GPS
@@ -61,9 +52,9 @@ async function extractMetadata() {
             var lon = data.longitude.toFixed(6);
 
             fillBloc('bloc-gps', [
-                { cle: 'Latitude',    valeur: lat + '°' },
-                { cle: 'Longitude',   valeur: lon + '°' },
-                { cle: 'Altitude',    valeur: data.GPSAltitude ? Math.round(data.GPSAltitude) + ' m' : null },
+                { cle: 'Latitude',  valeur: lat + '°' },
+                { cle: 'Longitude', valeur: lon + '°' },
+                { cle: 'Altitude',  valeur: data.GPSAltitude ? Math.round(data.GPSAltitude) + ' m' : null },
             ]);
 
             var lien = document.createElement('a');
@@ -72,7 +63,6 @@ async function extractMetadata() {
             lien.className = 'lien-maps';
             lien.textContent = '→ Voir la localisation sur Google Maps';
             document.getElementById('bloc-gps').appendChild(lien);
-
             document.getElementById('card-gps').style.display = 'block';
         } else {
             document.getElementById('card-gps').style.display = 'none';
@@ -90,69 +80,38 @@ async function extractMetadata() {
     }
 }
 
-// Remplit un bloc avec les paires clé/valeur
-function fillBloc(id, champs) {
-    var el = document.getElementById(id);
-    var html = '';
-
-    champs.forEach(function (c) {
-        if (c.valeur !== null && c.valeur !== undefined && c.valeur !== '') {
-            html += '<div class="ligne">'
-                  + '<span class="cle">' + c.cle + '</span>'
-                  + '<span class="valeur">' + c.valeur + '</span>'
-                  + '</div>';
-        }
-    });
-
-    el.innerHTML = html || '<p class="vide">Non disponible</p>';
-}
-
-// Formate une date
-function formatDate(d) {
-    if (!d) return null;
-    if (d instanceof Date) return d.toLocaleString('fr-FR');
-    return d;
-}
-
-function showError(msg) {
-    var el = document.getElementById('erreur');
-    el.textContent = msg;
-    el.style.display = 'block';
-    document.getElementById('resultats').style.display = 'none';
-}
-
-// ── SCORING vie privée (basé sur scoring.py) ──────────────────────────
+// ── SCORING (basé sur scoring.py) ─────────────────────────────────────
 function afficherScoring(data) {
     var score = 0;
     var details = [];
 
     if (data.latitude && data.longitude) { score += 4; details.push('GPS présent (+4 pts)'); }
-    if (data.Model)           { score += 2; details.push('Modèle : ' + data.Model + ' (+2 pts)'); }
-    if (data.Artist)          { score += 2; details.push('Auteur : ' + data.Artist + ' (+2 pts)'); }
-    if (data.DateTimeOriginal){ score += 1; details.push('Date de prise de vue (+1 pt)'); }
-    if (data.Software)        { score += 1; details.push('Logiciel : ' + data.Software + ' (+1 pt)'); }
+    if (data.Model)            { score += 2; details.push('Modèle : ' + data.Model + ' (+2 pts)'); }
+    if (data.Artist)           { score += 2; details.push('Auteur : ' + data.Artist + ' (+2 pts)'); }
+    if (data.DateTimeOriginal) { score += 1; details.push('Date de prise de vue (+1 pt)'); }
+    if (data.Software)         { score += 1; details.push('Logiciel : ' + data.Software + ' (+1 pt)'); }
 
     var niveau = '';
-    if (score === 0)     niveau = 'FAIBLE — Sûre à partager';
-    else if (score <= 3) niveau = 'MODÉRÉ — Appareil identifiable';
-    else if (score <= 6) niveau = 'ÉLEVÉ — Localisation exposée !';
-    else                 niveau = 'CRITIQUE — Ne pas partager !';
+    if (score === 0)     niveau = 'score-faible';
+    else if (score <= 3) niveau = 'score-modere';
+    else if (score <= 6) niveau = 'score-eleve';
+    else                 niveau = 'score-critique';
 
-    var html = '<div class="score-badge">' + score + '/10 — ' + niveau + '</div>';
+    var labels = { 'score-faible': 'FAIBLE — Sûre à partager', 'score-modere': 'MODÉRÉ — Appareil identifiable', 'score-eleve': 'ÉLEVÉ — Localisation exposée !', 'score-critique': 'CRITIQUE — Ne pas partager !' };
+
+    var html = '<div class="score-badge ' + niveau + '">' + score + '/10 — ' + labels[niveau] + '</div>';
     details.forEach(function(d) { html += '<div class="score-detail">→ ' + d + '</div>'; });
-
     document.getElementById('bloc-scoring').innerHTML = html;
 }
 
-// ── FACT-CHECK (basé sur factcheck.py) ───────────────────────────────
+// ── FACT-CHECK (basé sur factcheck.py) ────────────────────────────────
 function afficherFactcheck(data) {
     var alertes = [];
 
     // Vérif 1 : logiciel de retouche
     if (data.Software) {
         var soft = data.Software.toLowerCase();
-        var retouche = ['photoshop', 'gimp', 'lightroom', 'affinity', 'darktable'];
-        retouche.forEach(function(r) {
+        ['photoshop', 'gimp', 'lightroom', 'affinity', 'darktable'].forEach(function(r) {
             if (soft.indexOf(r) !== -1) alertes.push('Logiciel de retouche détecté : ' + data.Software);
         });
     }
@@ -172,12 +131,65 @@ function afficherFactcheck(data) {
         if (estSmartphone && !data.latitude) alertes.push('Smartphone sans GPS : données supprimées ou désactivées');
     }
 
-    var html = '';
-    if (alertes.length === 0) {
-        html = '<p class="ok">✅ Aucune anomalie détectée</p>';
-    } else {
-        alertes.forEach(function(a) { html += '<div class="alerte">⚠ ' + a + '</div>'; });
-    }
+    var html = alertes.length === 0
+        ? '<p class="ok">✅ Aucune anomalie détectée</p>'
+        : alertes.map(function(a) { return '<div class="alerte">⚠ ' + a + '</div>'; }).join('');
 
     document.getElementById('bloc-factcheck').innerHTML = html;
+}
+
+// ── GÉNÉRER LE SCRIPT PYTHON piexif ───────────────────────────────────
+function genererScript() {
+    var nom      = document.getElementById('nom-fichier').textContent.split(' —')[0].trim() || 'image.jpg';
+    var make     = document.getElementById('make').value;
+    var model    = document.getElementById('model').value;
+    var datetime = document.getElementById('datetime').value;
+    var artist   = document.getElementById('artist').value;
+    var desc     = document.getElementById('description').value;
+
+    var lignes = [];
+    if (make)     lignes.push('exif_dict["0th"][piexif.ImageIFD.Make] = b"' + make + '"');
+    if (model)    lignes.push('exif_dict["0th"][piexif.ImageIFD.Model] = b"' + model + '"');
+    if (artist)   lignes.push('exif_dict["0th"][piexif.ImageIFD.Artist] = b"' + artist + '"');
+    if (desc)     lignes.push('exif_dict["0th"][piexif.ImageIFD.ImageDescription] = b"' + desc + '"');
+    if (datetime) lignes.push('exif_dict["Exif"][piexif.ExifIFD.DateTimeOriginal] = b"' + datetime + '"');
+
+    var script =
+'import piexif\nfrom PIL import Image\n\n' +
+'img = Image.open("' + nom + '")\n' +
+'raw = img.info.get("exif", b"")\n' +
+'exif_dict = piexif.load(raw) if raw else {"0th": {}, "Exif": {}, "GPS": {}}\n\n' +
+(lignes.length ? lignes.join('\n') : '# Aucun champ renseigné') + '\n\n' +
+'exif_bytes = piexif.dump(exif_dict)\n' +
+'img.save("modifie_' + nom + '", exif=exif_bytes)\n' +
+'print("Image sauvegardée")';
+
+    var out = document.getElementById('scriptOutput');
+    out.textContent = script;
+    out.style.display = 'block';
+}
+
+// ── UTILITAIRES ───────────────────────────────────────────────────────
+function fillBloc(id, champs) {
+    var el = document.getElementById(id);
+    var html = '';
+    champs.forEach(function(c) {
+        if (c.valeur !== null && c.valeur !== undefined && c.valeur !== '') {
+            html += '<div class="ligne"><span class="cle">' + c.cle + '</span><span class="valeur">' + c.valeur + '</span></div>';
+        }
+    });
+    el.innerHTML = html || '<p class="vide">Non disponible</p>';
+}
+
+function formatDate(d) {
+    if (!d) return null;
+    if (d instanceof Date) return d.toLocaleString('fr-FR');
+    return d;
+}
+
+function showError(msg) {
+    var el = document.getElementById('erreur');
+    el.textContent = msg;
+    el.style.display = 'block';
+    document.getElementById('resultats').style.display = 'none';
 }

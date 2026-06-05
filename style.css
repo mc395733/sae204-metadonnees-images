@@ -1,32 +1,22 @@
-/* SAE 204 — style.css */
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: Arial, sans-serif;
   background: #f0f2f5;
   color: #222;
-  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
-/* HEADER */
 header {
   background: #1a1a2e;
   color: white;
-  padding: 20px 30px;
-  text-align: center;
+  padding: 20px;
 }
-header h1 { font-size: 20px; margin-bottom: 5px; }
+header h1 { font-size: 22px; margin-bottom: 5px; }
 header p  { font-size: 13px; color: #aab; }
 
-/* MAIN */
-main {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
+main { max-width: 700px; margin: 30px auto; padding: 0 20px; }
 
-/* UPLOAD */
 .upload {
   display: flex;
   gap: 10px;
@@ -49,64 +39,48 @@ main {
 }
 .upload button:hover { background: #2244cc; }
 
-/* APERCU */
-#apercu-wrap {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-#apercu {
-  max-width: 120px;
-  max-height: 100px;
-  border-radius: 6px;
-  border: 1px solid #dde;
-  object-fit: cover;
-}
+#apercu-wrap { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+#apercu { max-width: 120px; max-height: 100px; border-radius: 6px; border: 1px solid #dde; object-fit: cover; }
 #nom-fichier { font-size: 13px; color: #666; }
 
-/* ERREUR */
-#erreur {
-  background: #fff0f0;
-  border: 1px solid #f5b0b0;
-  color: #cc2222;
-  padding: 10px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  margin-bottom: 15px;
-}
-
-/* CARDS */
 .card {
   background: white;
   border-radius: 8px;
   border: 1px solid #dde;
   padding: 18px;
   margin-bottom: 14px;
-}
-.card h2 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #eee;
+  text-align: left;
 }
 
-/* LIGNES CLÉ / VALEUR */
-.ligne {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid #f5f5f5;
+.modifier label { display: block; margin-top: 8px; font-size: 13px; }
+.modifier input {
+  width: 95%;
+  padding: 6px;
+  margin-top: 3px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
   font-size: 13px;
 }
-.ligne:last-child { border-bottom: none; }
-.cle    { color: #888; }
-.valeur { color: #222; font-weight: 500; text-align: right; }
-.vide   { font-size: 13px; color: #aaa; font-style: italic; }
+.modifier button {
+  margin-top: 10px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.modifier button:hover { background: #388e3c; }
 
-/* LIEN GOOGLE MAPS */
+pre.script-output {
+  background: #eaeaea;
+  padding: 10px;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
 .lien-maps {
   display: inline-block;
   margin-top: 10px;
@@ -118,3 +92,18 @@ main {
   font-size: 13px;
 }
 .lien-maps:hover { background: #2244cc; }
+
+.score-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 13px; margin-bottom: 8px; }
+.score-faible { background: #d4f5e8; color: #0a7a4a; }
+.score-modere { background: #fff3d4; color: #8a5a00; }
+.score-eleve { background: #ffe0cc; color: #aa3300; }
+.score-critique { background: #ffd4d4; color: #cc0000; }
+.alerte { background: #fff3d4; border: 1px solid #f5d080; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #7a5000; margin-bottom: 6px; }
+.ok { color: #0a7a4a; font-size: 13px; font-style: italic; }
+.score-detail { font-size: 12px; color: #555; padding-left: 8px; margin-top: 3px; }
+.ligne { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f5f5f5; font-size: 13px; }
+.ligne:last-child { border-bottom: none; }
+.cle { color: #888; }
+.valeur { color: #222; font-weight: 500; text-align: right; }
+.vide { font-size: 13px; color: #aaa; font-style: italic; }
+#erreur { background: #fff0f0; border: 1px solid #f5b0b0; color: #cc2222; padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 15px; }

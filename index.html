@@ -9,34 +9,80 @@
 </head>
 <body>
 
-  <header>
-    <h1>🔍 EXIF Analyzer</h1>
-    <p>Coutant Mathéo & Charpentier Jules — IUT Auxerre — SAE 204</p>
-  </header>
+<header>
+  <h1>🔍 EXIF Analyzer</h1>
+  <p>Coutant Mathéo & Charpentier Jules — IUT Auxerre — SAE 204</p>
+</header>
 
-  <main>
-    <div class="upload">
-      <input type="file" id="imageInput" accept="image/*">
-      <button onclick="extractMetadata()">Analyser</button>
+<main>
+  <!-- Upload -->
+  <div class="upload">
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="extractMetadata()">Analyser</button>
+  </div>
+
+  <!-- Aperçu image -->
+  <div id="apercu-wrap" style="display:none;">
+    <img id="apercu" src="" alt="Aperçu">
+    <p id="nom-fichier"></p>
+  </div>
+
+  <p id="erreur" style="display:none;"></p>
+
+  <!-- Résultats -->
+  <div id="resultats" style="display:none;">
+
+    <div class="card">
+      <h2>🔒 Score vie privée</h2>
+      <div id="bloc-scoring"></div>
     </div>
 
-    <div id="apercu-wrap" style="display:none;">
-      <img id="apercu" src="" alt="Aperçu">
-      <p id="nom-fichier"></p>
+    <div class="card">
+      <h2>🔍 Fact-checking</h2>
+      <div id="bloc-factcheck"></div>
     </div>
 
-    <p id="erreur" style="display:none;"></p>
-
-    <div id="resultats" style="display:none;">
-      <div class="card"><h2>🔒 Score vie privée</h2><div id="bloc-scoring"></div></div>
-      <div class="card"><h2>🔍 Fact-checking</h2><div id="bloc-factcheck"></div></div>
-      <div class="card"><h2>📸 Appareil photo</h2><div id="bloc-appareil"></div></div>
-      <div class="card"><h2>🖼 Informations image</h2><div id="bloc-image"></div></div>
-      <div class="card"><h2>📅 Date</h2><div id="bloc-date"></div></div>
-      <div class="card" id="card-gps"><h2>📍 Localisation GPS</h2><div id="bloc-gps"></div></div>
+    <div class="card">
+      <h2>📸 Appareil photo</h2>
+      <div id="bloc-appareil"></div>
     </div>
-  </main>
 
-  <script src="script.js"></script>
+    <div class="card">
+      <h2>🖼 Informations image</h2>
+      <div id="bloc-image"></div>
+    </div>
+
+    <div class="card">
+      <h2>📅 Date</h2>
+      <div id="bloc-date"></div>
+    </div>
+
+    <div class="card" id="card-gps">
+      <h2>📍 Localisation GPS</h2>
+      <div id="bloc-gps"></div>
+    </div>
+
+    <div class="card">
+      <h2>✏️ Modifier les métadonnées</h2>
+      <div class="modifier">
+        <label>Fabricant (Make)</label>
+        <input type="text" id="make" placeholder="Apple">
+        <label>Modèle (Model)</label>
+        <input type="text" id="model" placeholder="iPhone 17">
+        <label>Date/Heure</label>
+        <input type="text" id="datetime" placeholder="YYYY:MM:DD HH:MM:SS">
+        <label>Artiste / Auteur</label>
+        <input type="text" id="artist" placeholder="Nom auteur">
+        <label>Description</label>
+        <input type="text" id="description" placeholder="Description image">
+        <button onclick="genererScript()">Générer script Python</button>
+        <pre id="scriptOutput" class="script-output" style="display:none;"></pre>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="script.js"></script>
 </body>
 </html>
