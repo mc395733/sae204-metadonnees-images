@@ -1,0 +1,11 @@
+Active le venv :
+
+.venv\Scripts\activate
+
+Lance le script :
+
+python modifier_exif_simple.py
+
+le chemin : 
+
+images/IMG_1493.JPG
